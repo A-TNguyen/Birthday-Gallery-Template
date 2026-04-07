@@ -1,8 +1,10 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { isClerkAuthSkipped } from "@/lib/preview";
 
 const isPublicRoute = createRouteMatcher(["/signin(.*)", "/sign-up(.*)", "/"]);
 
 export default clerkMiddleware(async (auth, request) => {
+  if (isClerkAuthSkipped) return;
   if (!isPublicRoute(request)) {
     await auth.protect();
   }

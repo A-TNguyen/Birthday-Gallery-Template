@@ -4,17 +4,20 @@ import ConfettiDemo from "@/components/home/confetti-display";
 import Ballpit from "@/components/ui/Ballpit";
 import AudioController from "@/components/ui/AudioController";
 import { SignOutButton } from "@clerk/nextjs";
+import { isClerkAuthSkipped } from "@/lib/preview";
 
 export default function Home() {
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-gray-900">
-      <div className="absolute top-4 right-4 z-[70]">
-        <SignOutButton>
-          <button className="px-3 py-1 rounded-md bg-transparent text-white font-medium border border-white/70 hover:bg-white/10 hover:border-white transition-colors">
-            Sign out
-          </button>
-        </SignOutButton>
-      </div>
+      {!isClerkAuthSkipped && (
+        <div className="absolute top-4 right-4 z-[70]">
+          <SignOutButton>
+            <button className="px-3 py-1 rounded-md bg-transparent text-white font-medium border border-white/70 hover:bg-white/10 hover:border-white transition-colors">
+              Sign out
+            </button>
+          </SignOutButton>
+        </div>
+      )}
       {/* Ballpit Background */}
       <div className="absolute inset-0 z-1">
         <Ballpit

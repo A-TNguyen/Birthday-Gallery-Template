@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useUser, useClerk } from "@clerk/nextjs";
 import { siteConfig } from "@/config/site";
+import { isClerkAuthSkipped } from "@/lib/preview";
 
 interface AudioControllerProps {
   className?: string;
@@ -15,6 +16,8 @@ export default function AudioController({
 }: AudioControllerProps) {
   const { isSignedIn, isLoaded } = useUser();
   const clerk = useClerk();
+  const treatAsSignedIn =
+    isClerkAuthSkipped || (isLoaded && Boolean(isSignedIn));
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -28,8 +31,7 @@ export default function AudioController({
 
   // Play/pause toggle with authentication check
   const togglePlayPause = async () => {
-    // Don't allow audio control if not signed in
-    if (!isLoaded || !isSignedIn) {
+    if (!treatAsSignedIn) {
       console.log("Audio control requires authentication");
       return;
     }
@@ -55,6 +57,7 @@ export default function AudioController({
 
   // Stop audio when signed out - with immediate detection
   useEffect(() => {
+    if (isClerkAuthSkipped) return;
     if (isLoaded && !isSignedIn) {
       const audio = getAudioElement();
       if (audio && !audio.paused) {
@@ -68,6 +71,7 @@ export default function AudioController({
 
   // Periodic check for authentication state changes
   useEffect(() => {
+    if (isClerkAuthSkipped) return;
     const checkAuthState = () => {
       if (isLoaded && !isSignedIn) {
         const audio = getAudioElement();
@@ -88,6 +92,7 @@ export default function AudioController({
 
   // Additional check for immediate sign-out detection
   useEffect(() => {
+    if (isClerkAuthSkipped) return;
     const handleSignOut = () => {
       const audio = getAudioElement();
       if (audio && !audio.paused) {
@@ -205,8 +210,7 @@ export default function AudioController({
   // Progress percentage
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
 
-  // Don't render if not loaded or not signed in
-  if (!isLoaded || !isSignedIn) {
+  if (!treatAsSignedIn) {
     return null;
   }
 

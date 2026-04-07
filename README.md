@@ -8,6 +8,22 @@ Only people who **sign in** get to see the party page and the photo dome. Everyo
 
 If you’re setting up the login part, Clerk’s docs for Next.js are here: [Clerk Next.js quickstart](https://clerk.com/docs/quickstarts/nextjs).
 
+## Preview
+
+![Screen recording of the template — home, confetti, and dome gallery](public/project%20screenshot/TemplateProject.gif)
+
+**Home (`/home`)** — celebration page with Ballpit background  
+
+![Home page](public/project%20screenshot/homepage.png)
+
+**Home with confetti**  
+
+![Home page with confetti](public/project%20screenshot/homepageconfetti.png)
+
+**Dome gallery (`/gallery`)** — 3D photo dome  
+
+![Dome gallery](public/project%20screenshot/domegallery.png)
+
 ## What it’s built with
 
 - **Framework:** Next.js 15 (App Router), React 19, TypeScript  
@@ -37,6 +53,18 @@ npm run dev
 ```
 
 Then open [http://localhost:3000](http://localhost:3000).
+
+## Preview mode (screenshots without sign-in)
+
+To capture `/home` and `/gallery` without going through Clerk:
+
+1. In `.env.local`, set `NEXT_PUBLIC_SKIP_CLERK_AUTH=true` (see [`.env.example`](./.env.example)).
+2. Restart `npm run dev`.
+3. Open `/` — you’ll be redirected to `/home`. `/gallery` is open too. The Sign out control is hidden and the audio bar works without a session.
+
+Turn it **off** (`false` or remove the line) before any real deploy. You still need valid Clerk keys in `.env.local` so `ClerkProvider` can load; this flag only skips the login wall and route protection.
+
+Logic lives in [`src/lib/preview.ts`](src/lib/preview.ts) and is wired through [`src/middleware.ts`](src/middleware.ts), [`src/app/page.tsx`](src/app/page.tsx), [`src/app/home/page.tsx`](src/app/home/page.tsx), and [`src/components/ui/AudioController.tsx`](src/components/ui/AudioController.tsx).
 
 ## Background music (MP3) and the `public` folder
 
