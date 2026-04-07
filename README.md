@@ -2,11 +2,23 @@
 
 ## What is this?
 
-This is a template version Birthday Card I've created for my partner birthday that is overly engineered for fun. I also bought NFC tag to put on a post card in order for my loved one can view anytime.
+This is a template version Birthday Card I've created for my partner birthday that is overly engineered for fun. The live site URL is also written to an **NFC sticker** on a postcard so they can open it with a phone tap—see [NFC tags](#nfc-tags) below.
 
 Only people who **sign in** get to see the party page and the photo dome. Everyone else just sees the login screen. The words, pictures, and music file all live in one easy file ([`src/content/site.ts`](src/content/site.ts), with comments explaining each field) so you can personalize it without digging through tons of code.
 
 If you’re setting up the login part, Clerk’s docs for Next.js are here: [Clerk Next.js quickstart](https://clerk.com/docs/quickstarts/nextjs).
+
+## NFC tags
+
+I used **NTAG215** NFC sticker tags—small adhesive labels you can stick on a card, print, or gift packaging. Search for something like “NTAG215 NFC sticker” on [Amazon](https://www.amazon.com/s?k=NTAG215+NFC+sticker) (or your local Amazon site).
+
+**What I did**
+
+1. Deployed the site so it has a real **HTTPS URL** (for example on Vercel).
+2. Used a free NFC writing app on my phone (iOS *Shortcuts* plus an NFC read/write app, or Android apps like *NFC Tools*) to create a **URI / URL record** with that address.
+3. Stuck the programmed tag on a postcard. When someone holds an **iPhone (XS or newer)** or **Android phone** with NFC near the sticker, the OS offers to open the link in the browser—no app required for guests, just tap.
+
+**Tips:** Use your production root URL (e.g. `https://your-project.vercel.app`) so it matches your Clerk allowed domains. NTAG215 has enough space for a typical URL. If you fork this template, replace the URL on the tag when you change domains.
 
 ## Preview
 
